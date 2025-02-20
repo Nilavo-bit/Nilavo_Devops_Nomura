@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    image: nilavodas/nomura-userinfo:0.0.2
+    container_name: nomurauserinfo
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/nomurauserinfo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nomurauserinfo
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3307:3307"
+    networks:
+      - my-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+networks:
+  my-network:
+
+volumes:
+  mysql-data:
+
+
+  
